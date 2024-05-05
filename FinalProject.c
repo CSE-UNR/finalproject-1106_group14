@@ -18,7 +18,7 @@ int main(){
 		//Display/load image
 		break;
 		case '2':
-		//Edit image
+			printf("To crop image enter 4, to brighten image enter 5, and to dim image enter 6\n");
 		break;
 		default:
 			printf("Goodbye\n");
