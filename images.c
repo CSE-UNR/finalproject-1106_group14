@@ -16,7 +16,7 @@ void loadPhoto(int *ReadR, int *ReadC, char ArrayPhoto[][COL_S]);
 
 int main() {
     // User input
-    	int Option1, Option2, save;
+    	int Option1 = 0, Option2 = 0, save;
 
     // Store Photo
     int ReadC = 0, ReadR = 0;
