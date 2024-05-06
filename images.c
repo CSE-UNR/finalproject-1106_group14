@@ -36,30 +36,30 @@ int main() {
                 	processPhoto(&ReadR, &ReadC, Photo, proPhoto);
 					
                 if(proPhoto[0][0] == 0){
-                    displayPhoto(&ReadR, &ReadC, proPhoto);
+                    displayPhoto(&ReadR, &ReadC, Photo);
                 }
                 break;
             		case 2:
-                if(proPhoto[0][0] == 0){
+                if(Photo[0][0] == 0){
                     	printf("No Photo loaded\n");
                 }else{
                     printf("\n\nEditing Photo\n\n");
                     printf("To crop image enter 4, to brighten image enter 5, to dim image enter 6, to save enter 7\n");
                     scanf("%d", &Option2);
                     if(Option2 == 4){
-                        cropPhoto(&ReadR, &ReadC, proPhoto);
-                        displayPhoto(&ReadC, &ReadR, proPhoto);
+                        cropPhoto(&ReadR, &ReadC, Photo);
+                        displayPhoto(&ReadC, &ReadR, Photo);
 
                     }else if(Option2 == 5){
-                        brightenPhoto(&ReadR, &ReadC, proPhoto);
-                        displayPhoto(&ReadC, &ReadR, proPhoto);
+                        brightenPhoto(&ReadR, &ReadC, Photo);
+                        displayPhoto(&ReadC, &ReadR, Photo);
 
                     }else if(Option2 == 6){
-                        dimPhoto(&ReadR, &ReadC, proPhoto);
-                        	displayPhoto(&ReadC, &ReadR, proPhoto);
+                        dimPhoto(&ReadR, &ReadC, Photo);
+                        	displayPhoto(&ReadC, &ReadR, Photo);
 
                     }else if(Option2 == 7){
-                        	savePhoto(&ReadR, &ReadC, proPhoto);
+                        	savePhoto(&ReadR, &ReadC, Photo);
 
                     }
                 }
@@ -81,35 +81,37 @@ void loadPhoto(int *ReadR, int *ReadC, char ArrayPhoto[][COL_S]) {
     char FILENAME[900];
     int Rows = 0,Col = 0;
 
-    for (int i = 0; i < *ReadR; i++) {
-        for (int j = 0; j < *ReadC; j++) {
-            ArrayPhoto[i][j] = 0;
-        }
-    }
 
     printf("Please put in a file name to display the photo\n");
     scanf("%s", FILENAME);
 
     FP = fopen(FILENAME, "r");
-
+	
     if(FP == NULL){
         printf("Error opening the file you named, maybe it doesn't exist.\n");
     }else{
+    	  for (int i = 0; i < *ReadR; i++) {
+        for (int j = 0; j < *ReadC; j++) {
+            ArrayPhoto[i][j] = 0;
+        }
+    }
         for(Rows = 0; Rows < ROW_S; Rows++) {
             fgets(ArrayPhoto[Rows], (ROW_S + 1), FP);
         }
         fclose(FP);
 
-        for(Rows = 0; ArrayPhoto[Rows][0] != '\0' && ArrayPhoto[Rows][0] != '\n'; Rows++){}
+        for(Rows = 0; ArrayPhoto[Rows][0] != '\0' && ArrayPhoto[Rows][0] != '\n'; Rows++){
         *ReadR = Rows;
-        for(Col = 0; ArrayPhoto[0][Col]!= '\0' && ArrayPhoto[0][Col]!= '\n'; Col++){}
+        }
+        
+        for(Col = 0; ArrayPhoto[0][Col]!= '\0' && ArrayPhoto[0][Col]!= '\n'; Col++){
         *ReadC = Col;
+      	}
     }
 }
 
 void displayPhoto(int *Rows, int *Col, char ArrayPhoto[][COL_S]) {
     printf("______________________________________\n");
-
     for (int i = 0; i < *Rows; i++) {
         for (int j = 0; j < *Col; j++) {
             printf("%c", ArrayPhoto[i][j]);
