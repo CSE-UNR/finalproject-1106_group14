@@ -35,7 +35,7 @@ int main() {
                 loadPhoto(&ReadR, &ReadC, Photo);
                 	processPhoto(&ReadR, &ReadC, Photo, proPhoto);
 					
-                if(proPhoto[0][0] == 0){
+                        if(proPhoto[0][0] == 0){
                     displayPhoto(&ReadR, &ReadC, Photo);
                 }
                 break;
@@ -44,7 +44,7 @@ int main() {
                     	printf("No Photo loaded\n");
                 }else{
                     printf("\n\nEditing Photo\n\n");
-                    printf("To crop image enter 4, to brighten image enter 5, to dim image enter 6, to save enter 7\n");
+                        printf("To crop image enter 4, to brighten image enter 5, to dim image enter 6, to save enter 7\n");
                     scanf("%d", &Option2);
                     if(Option2 == 4){
                         cropPhoto(&ReadR, &ReadC, Photo);
@@ -76,7 +76,7 @@ int main() {
     return 0;
 }
 
-void loadPhoto(int *ReadR, int *ReadC, char ArrayPhoto[][COL_S]) {
+void loadPhoto(int *ReadR, int *ReadC, char ArrayPhoto[][COL_S]){
     FILE *FP;
     char FILENAME[900];
     int Rows = 0,Col = 0;
@@ -90,12 +90,12 @@ void loadPhoto(int *ReadR, int *ReadC, char ArrayPhoto[][COL_S]) {
     if(FP == NULL){
         printf("Error opening the file you named, maybe it doesn't exist.\n");
     }else{
-    	  for (int i = 0; i < *ReadR; i++) {
-        for (int j = 0; j < *ReadC; j++) {
+    	  for(int i = 0; i < *ReadR; i++){
+        for(int j = 0; j < *ReadC; j++){
             ArrayPhoto[i][j] = 0;
         }
     }
-        for(Rows = 0; Rows < ROW_S; Rows++) {
+        for(Rows = 0; Rows < ROW_S; Rows++){
             fgets(ArrayPhoto[Rows], (ROW_S + 1), FP);
         }
         fclose(FP);
@@ -122,30 +122,25 @@ void displayPhoto(int *Rows, int *Col, char ArrayPhoto[][COL_S]) {
     printf("______________________________________\n");
 }
 
-void brightenPhoto(int *Rows, int *Col, char ReadArr[][COL_S]) {
+void brightenPhoto(int *Rows, int *Col, char ReadArr[][COL_S]){
     int Curval;
 
-    for(int i = 0; i < *Rows; i++){
+   for(int i = 0; i < *Rows; i++){
         for(int j = 0; j < *Col; j++){
             Curval = ReadArr[i][j];
             switch(Curval){
-                case 32:
-                    ReadArr[i][j] = '.';
+                case' ':
                     break;
-                case 46:
+                case'.':
                     ReadArr[i][j] = 'o';
                     break;
-                case 111:
+                case 'o':
                     ReadArr[i][j] = 'O';
                     break;
-                case 79:
-                    ReadArr[i][j] = '0';
-                    break;
-                case 48:
-                    ReadArr[i][j] = '0';
+                case 'O':
                     break;
                 default:
-                    printf("error on row %d, Column %d\n", i, j);
+                    printf("error on row %d, Column %d\n",i,j);
                     break;
             }
         }
@@ -158,21 +153,16 @@ void dimPhoto(int *Rows, int *Col, char ReadArr[][COL_S]) {
     for (int i = 0; i < *Rows; i++) {
         for (int j = 0; j < *Col; j++) {
             Curval = ReadArr[i][j];
-            switch (Curval) {
-                case 32:
+            switch(Curval){
+               case' ':
+                    break;
+                case'.':
                     ReadArr[i][j] = ' ';
                     break;
-                case 46:
-                    ReadArr[i][j] = ' ';
-                    break;
-                case 111:
+                case 'o':
                     ReadArr[i][j] = '.';
                     break;
-                case 79:
-                    ReadArr[i][j] = 'o';
-                    break;
-                case 48:
-                    ReadArr[i][j] = 'O';
+                case 'O':
                     break;
                 default:
                     printf("error on row %d, Column %d\n", i, j);
@@ -192,30 +182,36 @@ void savePhoto(int *Rows, int *Col, char ReadArr[][COL_S]) {
     FP = fopen(FILENAME, "w");
 
     // Write ReadArr content to the file here
-
+    for(int i = 0; i< *Rows; i++){
+        for(int j = 0; j < *Col; j++){
+            fprintf(FP, "%c",ReadArr[i][j]);
+        }
+        fprintf(FP, "\n");
+    }
+    printf("saved!");
     fclose(FP);
 }
 
-void processPhoto(int *Rows, int *Col, char ReadArr[][COL_S], char Arr[][COL_S]) {
+void processPhoto(int *Rows, int *Col, char ReadArr[][COL_S], char Arr[][COL_S]){
     int Curchar, ValidPhoto = 0;
 
-    for (int i = 0; i < *Rows; i++) {
-        for (int j = 0; j < *Col; j++) {
+    for(int i = 0; i < *Rows; i++){
+        for(int j = 0; j < *Col; j++){
             Curchar = Arr[i][j];
-            switch (Curchar) {
-                case 48:
+            switch(Curchar){
+                case ' ':
                     ReadArr[i][j] = ' ';
                     break;
-                case 49:
+                case '.':
                     ReadArr[i][j] = '.';
                     break;
-                case 50:
+                case 'o':
                     ReadArr[i][j] = 'o';
                     break;
-                case 51:
+                case 'O':
                     ReadArr[i][j] = 'O';
                     break;
-                case 52:
+                case '0':
                     ReadArr[i][j] = '0';
                     break;
                 default:
@@ -226,15 +222,16 @@ void processPhoto(int *Rows, int *Col, char ReadArr[][COL_S], char Arr[][COL_S])
     }
 }
 
-void cropPhoto(int *Rows, int *Col, char ReadArr[][COL_S]) {
+void cropPhoto(int *Rows, int *Col, char ReadArr[][COL_S]){
     int cropR = 0, cropC = 0, validC = 0, validR = 0, xRows = 0, xCols = 0, choice;
 
-    do {
+    do{
         do{
             printf("What row would you like to remove and where at?\nThe first Row should start at 0\n\n");
-            scanf("%d", &cropR);
-            if(cropR > *Rows){
+            scanf("%d",&cropR);
+            if(cropR >= *Rows){
                 printf("Your image is smaller than where you want to crop on the rows\n");
+                validR = 0;
             }else{
                 validR = 1;
             }
@@ -242,33 +239,38 @@ void cropPhoto(int *Rows, int *Col, char ReadArr[][COL_S]) {
 
         do{
             printf("What column would you like to remove and where at?\nThe first column should start at 0\n\n");
-            scanf("%d", &cropC);
-            if(cropC > *Col){
-                printf("Your image is smaller than where you want to crop on the rows\n");
+            scanf("%d",&cropC);
+            if(cropC >=*Col){
+                printf("Your image is smaller than where you want to crop on the columns\n");
                 validC = 0;
             }else{
                 validC = 1;
             }
-        } while (validC == 0);
+        }while(validC == 0);
 
-        printf("You want to crop row at %d\nYou want to crop at column: %d\nIs this correct? (1 = yes 2 = no) ", cropR, cropC);
+        printf("You want to crop row at %d\nYou want to crop at column: %d\nIs this correct? (1 = yes 2 = no) ",cropR,cropC);
         scanf("%d", &choice);
-    } while (choice == 1);
+    }while(choice == 2);
 
-    for (int i = 0; i < *Rows; i++) {
-        for (int j = 0; i < *Col; j++) {
-            if (i >= cropR || j >= cropC) {
-                ReadArr[i][j];
+        for(int i = 0; i < *Rows - cropR; i++){
+            for(int j = 0; j < *Col - cropC; j++){
+                ReadArr[i][j] = ReadArr[i + cropR][j + cropC];
             }
-        }
     }
-
-    for(xRows = 0; ReadArr[xRows][0] != '\0' && ReadArr[xRows][0] != '\n'; xRows++){}
-    *Rows = xRows;
-
-    for(xCols = 0; ReadArr[0][xCols] != '\0' && ReadArr[0][xCols] != '\n'; xCols++){}
-    *Col = xCols;
+    
+         *Rows -= cropR;
+                *Col -= cropC;
+    
+        for(xRows = 0; ReadArr[xRows][0] != '\0' && ReadArr[xRows][0] != '\n'; xRows++){
+        *Rows = xRows;
+    }
+    
+        for(xCols = 0; ReadArr[0][xCols] != '\0' && ReadArr[0][xCols] != '\n'; xCols++){
+        *Col = xCols;
+    }
 }
+
+
 
 	
 
