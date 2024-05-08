@@ -51,11 +51,11 @@ int main() {
                         displayPhoto(&ReadC, &ReadR, Photo);
 
                     }else if(Option2 == 5){
-                        brightenPhoto(&ReadR, &ReadC, Photo);
+                        brightenPhoto(&ReadR, &ReadC, proPhoto);
                         displayPhoto(&ReadC, &ReadR, Photo);
 
                     }else if(Option2 == 6){
-                        dimPhoto(&ReadR, &ReadC, Photo);
+                        dimPhoto(&ReadR, &ReadC, proPhoto);
                         	displayPhoto(&ReadC, &ReadR, Photo);
 
                     }else if(Option2 == 7){
@@ -123,54 +123,54 @@ void displayPhoto(int *Rows, int *Col, char ArrayPhoto[][COL_S]) {
 }
 
 void brightenPhoto(int *Rows, int *Col, char ReadArr[][COL_S]){
-    int Curval;
-
-   for(int i = 0; i < *Rows; i++){
+    for(int i = 0; i < *Rows; i++){
         for(int j = 0; j < *Col; j++){
-            Curval = ReadArr[i][j];
-            switch(Curval){
-                case' ':
+            switch(ReadArr[i][j]){
+                case ' ':
+                    ReadArr[i][j] = '.';
                     break;
-                case'.':
+                case '.':
                     ReadArr[i][j] = 'o';
                     break;
                 case 'o':
                     ReadArr[i][j] = 'O';
                     break;
                 case 'O':
+                    // Do nothing, already at maximum brightness
                     break;
                 default:
-                    printf("error on row %d, Column %d\n",i,j);
+                    printf("Error on row %d, Column %d\n", i, j);
                     break;
             }
         }
     }
 }
 
-void dimPhoto(int *Rows, int *Col, char ReadArr[][COL_S]) {
-    int Curval;
 
-    for (int i = 0; i < *Rows; i++) {
-        for (int j = 0; j < *Col; j++) {
-            Curval = ReadArr[i][j];
-            switch(Curval){
-               case' ':
+void dimPhoto(int *Rows, int *Col, char ReadArr[][COL_S]){
+    for(int i = 0; i < *Rows; i++){
+        for(int j = 0; j < *Col; j++){
+            switch(ReadArr[i][j]){
+                case ' ':
+                    // Do nothing, already at minimum brightness
                     break;
-                case'.':
+                case '.':
                     ReadArr[i][j] = ' ';
                     break;
                 case 'o':
                     ReadArr[i][j] = '.';
                     break;
                 case 'O':
+                    ReadArr[i][j] = 'o';
                     break;
                 default:
-                    printf("error on row %d, Column %d\n", i, j);
+                    printf("Error on row %d, Column %d\n", i, j);
                     break;
             }
         }
     }
 }
+
 
 void savePhoto(int *Rows, int *Col, char ReadArr[][COL_S]) {
     FILE *FP;
